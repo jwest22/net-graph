@@ -1,0 +1,14 @@
+version: 2
+
+models:
+    - name: user
+      description: "Generated automatically via ORM model."
+      columns:
+          - name: email
+            description: "VARCHAR"
+
+    - name: test
+      description: "Generated automatically via ORM model."
+      columns:
+          - name: test_2
+            description: "VARCHAR"
