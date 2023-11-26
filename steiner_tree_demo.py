@@ -47,10 +47,6 @@ def add_graph_items(table_name, df):
         G.add_edge(f"{table_name}.{col1}", f"{table_name}.{col2}",weight=1,color='black')
         # You need to define how you calculate the similarity between col1 and col2 here
 
-# Add items to graph
-for table_name, df in dfs.items():
-    add_graph_items(table_name, df)
-
 # Custom function to calculate Jaccard index based on records attribute
 def calculate_jaccard(G, node1, node2):
     records1 = G.nodes[node1]['records']
@@ -67,16 +63,21 @@ def add_inter_table_relationships(graph, dataframes):
                 common_columns = set(df1.columns).intersection(df2.columns)
                 for col in common_columns:
                     graph.add_edge(f"{table1}.{col}", f"{table2}.{col}",weight=1,color='blue')
-                               
+
+# Add base items to graph
+for table_name, df in dfs.items():
+    add_graph_items(table_name, df)
+    
+# Add inter-table relationships to graph                  
 add_inter_table_relationships(G, dfs)
 
-# Iterate over all combinations of nodes to calculate Jaccard index
+# Add Jaccard relations to graph - Iterate over all combinations of nodes to calculate Jaccard index
 for node1, node2 in combinations(G.nodes(), 2):
     jaccard_index = calculate_jaccard(G, node1, node2)
-    if jaccard_index > similarity_index:
+    if jaccard_index > similarity_index and not G.has_edge(node1, node2):
         # Add an edge for Jaccard index above similarity_index variable
         G.add_edge(node1, node2, weight=jaccard_index,color='yellow')
-
+    
 # Print the edges with Jaccard index above similarity_index variable
 print("Jaccard Index Edges Added:")
 for u, v, weight in G.edges(data='weight'):
