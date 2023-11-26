@@ -24,8 +24,10 @@ terminal_nodes = start_nodes | target_nodes
 st_tree = steiner_tree(G, terminal_nodes)
 
 # Draw the original graph
-plt.figure(figsize=(12, 8))
-pos = nx.spring_layout(G)  # positions for all nodes
+plt.figure(figsize=(15, 15))
+
+pos = nx.spring_layout(G, k=0.15, iterations=20)  # positions for all nodes
+
 nx.draw_networkx_nodes(G, pos, node_size=700)
 nx.draw_networkx_edges(G, pos, edgelist=G.edges(), width=1)
 nx.draw_networkx_labels(G, pos, font_size=20, font_family="sans-serif")

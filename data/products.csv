@@ -1,4 +1,4 @@
-product_id,name,price
+product_id,product_name,price
 1,interesting,279.52
 2,book,288.79
 3,service,51.48

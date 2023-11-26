@@ -4,7 +4,12 @@ import matplotlib.pyplot as plt
 from itertools import combinations
 from networkx.algorithms.approximation import steiner_tree
 
-similarity_index = 0.8
+# Set similarity index threshold for edge creation. Set to greater than 1 to disable. 
+similarity_index = 0.5
+
+# Set terminal nodes to find path
+start_nodes = {'users.email'}
+target_nodes = {'order_details.product_id'}
 
 # Load CSV files into pandas DataFrames
 users_df = pd.read_csv('data/users.csv')
@@ -39,7 +44,7 @@ def add_graph_items(table_name, df):
 
     # Connect each column to every other column within the same table
     for col1, col2 in combinations(columns, 2):
-        G.add_edge(f"{table_name}.{col1}", f"{table_name}.{col2}")
+        G.add_edge(f"{table_name}.{col1}", f"{table_name}.{col2}",weight=1,color='black')
         # You need to define how you calculate the similarity between col1 and col2 here
 
 # Add items to graph
@@ -61,7 +66,7 @@ def add_inter_table_relationships(graph, dataframes):
             if table1 != table2:
                 common_columns = set(df1.columns).intersection(df2.columns)
                 for col in common_columns:
-                    graph.add_edge(f"{table1}.{col}", f"{table2}.{col}")
+                    graph.add_edge(f"{table1}.{col}", f"{table2}.{col}",weight=1,color='blue')
                                
 add_inter_table_relationships(G, dfs)
 
@@ -69,10 +74,10 @@ add_inter_table_relationships(G, dfs)
 for node1, node2 in combinations(G.nodes(), 2):
     jaccard_index = calculate_jaccard(G, node1, node2)
     if jaccard_index > similarity_index:
-        # Add an edge for Jaccard index above 0.5
-        G.add_edge(node1, node2, weight=jaccard_index)
+        # Add an edge for Jaccard index above similarity_index variable
+        G.add_edge(node1, node2, weight=jaccard_index,color='yellow')
 
-# Print the edges with Jaccard index above 0.5
+# Print the edges with Jaccard index above similarity_index variable
 print("Jaccard Index Edges Added:")
 for u, v, weight in G.edges(data='weight'):
     if weight is not None and weight > similarity_index:
@@ -84,19 +89,19 @@ print("Number of edges:", G.number_of_edges())
 print("Graph Edges:")
 print(G.edges())
 
-# Define terminal nodes - modify this based on your requirements
-start_nodes = {'users.email'}
-target_nodes = {'order_details.product_id'}
 terminal_nodes = start_nodes | target_nodes
 # Compute the Steiner Tree
 st_tree = steiner_tree(G, terminal_nodes, method='mehlhorn')
 
+edges = G.edges()
+colors = [G[u][v]['color'] for u,v in edges]
+
 # Draw the original graph
-plt.figure(figsize=(12, 8))
-pos = nx.spring_layout(G)  # positions for all nodes
-nx.draw_networkx_nodes(G, pos, node_size=700)
-nx.draw_networkx_edges(G, pos, edgelist=G.edges())
-nx.draw_networkx_labels(G, pos, font_size=20, font_family="sans-serif")
+plt.figure(figsize=(15, 15))
+pos = nx.spring_layout(G, k=0.25, iterations=25)  # positions for all nodes
+nx.draw_networkx_nodes(G, pos, node_size=350)
+nx.draw_networkx_edges(G, pos, edgelist=G.edges(), edge_color=colors)
+nx.draw_networkx_labels(G, pos, font_size=12, font_family="sans-serif")
 
 # Highlight the edges of the Steiner Tree
 nx.draw_networkx_edges(
