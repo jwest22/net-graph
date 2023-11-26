@@ -98,11 +98,11 @@ edges = G.edges()
 colors = [G[u][v]['color'] for u,v in edges]
 
 # Draw the original graph
-plt.figure(figsize=(15, 15))
-pos = nx.spring_layout(G, k=0.25, iterations=25)  # positions for all nodes
-nx.draw_networkx_nodes(G, pos, node_size=350)
+plt.figure(figsize=(10, 10))
+pos = nx.spring_layout(G, k=0.15, iterations=25)  # positions for all nodes
+nx.draw_networkx_nodes(G, pos)
 nx.draw_networkx_edges(G, pos, edgelist=G.edges(), edge_color=colors)
-nx.draw_networkx_labels(G, pos, font_size=12, font_family="sans-serif")
+nx.draw_networkx_labels(G, pos)
 
 # Highlight the edges of the Steiner Tree
 nx.draw_networkx_edges(
@@ -111,7 +111,9 @@ nx.draw_networkx_edges(
 
 title_string_start = ', '.join(start_nodes)
 title_string_target =  ', '.join(target_nodes)
-title_string = "Network Steiner Tree: " + title_string_start + " to " + title_string_target + " (Red Edges)"
+title_string = "Network Steiner Tree: " + title_string_start + " to " + title_string_target + '''
+  Black = Intra-Table, Blue  = Inter-table, Yellow = Jaccard Relation, Red = Steiner Tree
+'''
 
 plt.title(title_string)
 plt.axis("off")
