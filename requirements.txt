@@ -1,7 +1,6 @@
 pandas
 networkx
 matplotlib
-itertools
 networkx
 pyvis
 streamlit
