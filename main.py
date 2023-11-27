@@ -8,7 +8,7 @@ st.title(':cat2: Multi-modal relation resolution with Steiner tree traversal! :c
     
 def main():
     
-    similarity_index_control = st.slider('Similarity Index Relation Threashold',min_value=0.00,max_value=1.01, value=1.01)
+    similarity_index_control = st.slider('Similarity Index Relation Threashold (set to 1.01 to disable)',min_value=0.00,max_value=1.01, value=1.01)
     
     # Check if the state variables exist, otherwise initialize them
     if 'start-nodes-key' not in st.session_state:
@@ -17,8 +17,8 @@ def main():
         st.session_state['target-nodes-key'] = 'order_details.product_id'
 
     # Create two text input fields
-    start_nodes = st.text_input("Starting Node(s)", 'users.email')
-    target_nodes = st.text_input("Target Node(s)", 'order_details.product_id')
+    start_nodes = st.text_input("Starting Node(s) [comma separated, no spaces]", 'users.email')
+    target_nodes = st.text_input("Target Node(s) [comma separated, no spaces]", 'order_details.product_id')
     if start_nodes is not None:
         st.session_state['start-nodes-key'] = start_nodes
     if target_nodes is not None:
