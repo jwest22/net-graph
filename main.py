@@ -2,6 +2,8 @@ import streamlit as st
 import streamlit.components.v1 as components
 import steiner_tree_demo
 
+st.set_page_config(page_title="Jake's Net Graph Lab")
+
 st.title(':cat2: Multi-modal relation resolution with Steiner tree traversal! :cat2:')
     
 def main():
