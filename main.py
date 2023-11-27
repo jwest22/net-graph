@@ -28,6 +28,6 @@ def main():
         steiner_tree_demo.auto_relation(similarity_index_control,st.session_state['start-nodes-key'],st.session_state['target-nodes-key'])
         HtmlFile = open("front.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read() 
-        components.html(source_code, height = '100%', width = '100%')
+        components.html(source_code)
             
 main()
