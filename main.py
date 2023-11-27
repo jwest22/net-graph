@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import steiner_tree_demo
 
-st.title('Steiner Tree Demo')
+st.title(':cat2: Multi-modal relation resolution with Steiner tree traversal! :cat2:')
     
 def main():
     
